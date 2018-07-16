@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".view.activity.TopActivity"
+    tools:context=".view.activities.TopActivity"
     tools:showIn="@layout/activity_top">
 
     <android.support.v7.widget.RecyclerView

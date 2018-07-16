@@ -1,4 +1,6 @@
-package com.top.yanadigital.topbeta.model.Artista;
+package com.top.yanadigital.topbeta.model.vo;
+
+import android.os.Build;
 
 import java.util.Objects;
 
@@ -6,12 +8,28 @@ public class Artista {
     private long id;
     private String nombre;
     private String apellidos;
-    private String fechaNacimiento;
+    private long fechaNacimiento;
     private String lugarNacimiento;
     private short estatura;
     private String notas;
     private int orden;
     private String fotoURL;
+
+    public Artista() {
+    }
+
+    public Artista(long id, String nombre, String apellidos, long fechaNacimiento,
+                   String lugarNacimiento, short estatura, String notas, int orden, String fotoURL) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.fechaNacimiento = fechaNacimiento;
+        this.lugarNacimiento = lugarNacimiento;
+        this.estatura = estatura;
+        this.notas = notas;
+        this.orden = orden;
+        this.fotoURL = fotoURL;
+    }
 
     public long getId() {
         return id;
@@ -37,11 +55,11 @@ public class Artista {
         this.apellidos = apellidos;
     }
 
-    public String getFechaNacimiento() {
+    public long getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(long fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -96,6 +114,27 @@ public class Artista {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id);
+        int result= 0;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+               return Objects.hash(id);
+
+            }
+           if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
+                result=31*result+(int)id;
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return  result;
+
+    }
+
+    public String getNombreCompleto() {
+        return this.nombre+" "+this.apellidos;
     }
 }
