@@ -1,16 +1,24 @@
 package com.top.yanadigital.topbeta.view.activities;
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.top.yanadigital.topbeta.R;
 import com.top.yanadigital.topbeta.model.vo.Artista;
 import com.top.yanadigital.topbeta.model.vo.DialogSelectedFecha;
@@ -37,6 +45,8 @@ public class AddArtistActivity extends AppCompatActivity implements DatePickerDi
     TextInputEditText edEstatura;
     @BindView(R.id.edNotas)
     TextInputEditText edNotas;
+    @BindView(R.id.edLugarNacimiento)
+    TextInputEditText edLugarNacimiento;
 
     /**
      * Comenzar con una m si no son públicos ni estáticos.
@@ -93,6 +103,18 @@ public class AddArtistActivity extends AppCompatActivity implements DatePickerDi
     }
 
     /**
+     * Inflar menu
+     *
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_save, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
      * Metodo que regresa al home y cierra la actividad
      *
      * @param item
@@ -104,23 +126,79 @@ public class AddArtistActivity extends AppCompatActivity implements DatePickerDi
             case android.R.id.home:
                 finish();
                 break;
+            case R.id.action_save:
+                saveArtist();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void saveArtist() {
+       /* mArtista.setNombre(edNombre.getText().toString().trim());
+        mArtista.setApellidos(edApellido.getText().toString().trim());
+        mArtista.setEstatura(Short.valueOf(edEstatura.getText().toString().trim()));
+        mArtista.setLugarNacimiento(edLugarNacimiento.getText().toString().trim());
+        mArtista.setNombre(edNotas.getText().toString().trim());*/
+        /**
+         * Agregar a la actividad principal el artista agregado
+         */
+        if(validarfields()) {
+            TopActivity.sARTISTA.setNombre(edNombre.getText().toString().trim());
+            TopActivity.sARTISTA.setApellidos(edApellido.getText().toString().trim());
+            TopActivity.sARTISTA.setEstatura(Short.valueOf(edEstatura.getText().toString().trim()));
+            TopActivity.sARTISTA.setLugarNacimiento(edLugarNacimiento.getText().toString().trim());
+            TopActivity.sARTISTA.setNombre(edNotas.getText().toString().trim());
+            TopActivity.sARTISTA.setOrden(mArtista.getOrden());
+            TopActivity.sARTISTA.setFotoURL(mArtista.getFotoURL());
+            //Bandera para indicar que salio bien todo y terminar la actividad
+            setResult(RESULT_OK);
+            finish();
+        }
+    }
+
+    private boolean validarfields() {
+            boolean isValidFalse=true;
+
+            try {
+                if(edEstatura.getText().toString().trim().isEmpty() ||
+                        Integer.valueOf(edEstatura.getText().toString().trim())< getResources().getInteger(R.integer.estatura_min)){
+                    edEstatura.setError(getString(R.string.addArtist_error_estaturaMin));
+                    edEstatura.requestFocus();
+                    isValidFalse=false;
+                }
+                if(edApellido.getText().toString().trim().isEmpty()){;
+                    edApellido.setError(getString(R.string.addArtist_error_required));
+                    edApellido.requestFocus();
+                    isValidFalse=false;
+                }
+
+                if(edNombre.getText().toString().trim().isEmpty()){;
+                    edNombre.setError(getString(R.string.addArtist_error_required));
+                    edNombre.requestFocus();
+                    isValidFalse=false;
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return isValidFalse;
+    }
+
     @OnClick(R.id.edfechaNacimiento)
     public void onSetFecha() {
-        DialogSelectedFecha dialogSelectedFecha= new DialogSelectedFecha();
+        DialogSelectedFecha dialogSelectedFecha = new DialogSelectedFecha();
         dialogSelectedFecha.setmListener(AddArtistActivity.this);
 
-        Bundle args= new Bundle();
-        args.putLong(dialogSelectedFecha.FECHA,mArtista.getFechaNacimiento());
+        Bundle args = new Bundle();
+        args.putLong(dialogSelectedFecha.FECHA, mArtista.getFechaNacimiento());
         dialogSelectedFecha.setArguments(args);
-        dialogSelectedFecha.show(getSupportFragmentManager(),DialogSelectedFecha.SELECTED_DATE);
+        dialogSelectedFecha.show(getSupportFragmentManager(), DialogSelectedFecha.SELECTED_DATE);
     }
 
     /**
      * Metodo para configurar el calendario
+     *
      * @param datePicker
      * @param year
      * @param month
@@ -128,13 +206,72 @@ public class AddArtistActivity extends AppCompatActivity implements DatePickerDi
      */
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-            mCalendar.setTimeInMillis(System.currentTimeMillis());
-            mCalendar.set(Calendar.YEAR,year);
-            mCalendar.set(Calendar.MONTH,month);
-            mCalendar.set(Calendar.DAY_OF_MONTH,day);
+        mCalendar.setTimeInMillis(System.currentTimeMillis());
+        mCalendar.set(Calendar.YEAR, year);
+        mCalendar.set(Calendar.MONTH, month);
+        mCalendar.set(Calendar.DAY_OF_MONTH, day);
 
-            edfechaNacimiento.setText(new SimpleDateFormat("dd/MM/yyyy",Locale.ROOT).format(mCalendar.getTimeInMillis()));
+        edfechaNacimiento.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.ROOT).format(mCalendar.getTimeInMillis()));
 
-            mArtista.setFechaNacimiento(mCalendar.getTimeInMillis());
+        mArtista.setFechaNacimiento(mCalendar.getTimeInMillis());
     }
+
+    /**
+     * Eventos para agregar, eliminar img desdes galeria o url
+     *
+     * @param view
+     */
+    @OnClick({R.id.imageDeleteFoto, R.id.imageFromGallery, R.id.imageFromUrl})
+    public void imageView(View view) {
+        switch (view.getId()) {
+            case R.id.imageDeleteFoto:
+                break;
+            case R.id.imageFromGallery:
+                break;
+            case R.id.imageFromUrl:
+                showAddPhotoGallery();
+                break;
+        }
+    }
+
+    private void showAddPhotoGallery() {
+        /*
+        Crear alerta desde codigo
+        * */
+        final EditText edUrlFoto = new EditText(this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.label_dialog_tittle)
+                .setPositiveButton(R.string.label_dialog_add, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        configImageView(edUrlFoto.getText().toString().trim());
+                    }
+                })
+                .setNegativeButton(R.string.label_dialog_cancel, null);
+        alertDialog.setView(edUrlFoto);
+        alertDialog.show();
+    }
+
+    private void configImageView(String fotoUrl) {
+        if (fotoUrl != null) {
+            RequestOptions options = new RequestOptions();
+            options.diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop();
+
+            //Descargar img
+
+            Glide.with(this)
+                    .load(fotoUrl)
+                    .apply(options)
+                    .into(imageFoto);
+        } else {
+            //Si es vacia colocar imagen por defecto
+            imageFoto.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_photo_size_select_actual));
+
+        }
+        mArtista.setFotoURL(fotoUrl);
+
+    }
+
+
 }

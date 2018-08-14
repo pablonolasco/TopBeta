@@ -29,6 +29,7 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
     @BindView(R.id.containerMain)
     CoordinatorLayout containerMain;
     private ArtistaAdapter artistaAdapter;
+    public static final Artista sARTISTA= new Artista();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +191,16 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
     //Metodos de la interface OnItemClickListener
     @Override
     public void onItemClcik(Artista artista) {
+        sARTISTA.setId(artista.getId());
+        sARTISTA.setNombre(artista.getNombre());
+        sARTISTA.setApellidos(artista.getApellidos());
+        sARTISTA.setEstatura(artista.getEstatura());
+        sARTISTA.setLugarNacimiento(artista.getLugarNacimiento());
+        sARTISTA.setOrden(artista.getOrden());
+        sARTISTA.setNotas(artista.getNotas());
+        sARTISTA.setFotoURL(artista.getFotoURL());
+        Intent intent= new Intent(this,DetalleActivity.class);
+        startActivity(intent);
 
     }
 
@@ -202,7 +213,8 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode== RESULT_OK && requestCode==1){
-
+            //Agregar el artista que viene desde la otra interfaz
+            artistaAdapter.add(sARTISTA);
         }
     }
 

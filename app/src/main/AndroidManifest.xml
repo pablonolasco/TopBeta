@@ -34,7 +34,16 @@
             android:name=".view.MainActivity"
             android:label="@string/title_activity_main3"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.activities.AddArtistActivity"></activity>
+        <activity android:name=".view.activities.AddArtistActivity" />
+        <activity
+            android:name=".view.activities.DetalleActivity"
+            android:label="@string/title_activity_detalle"
+            android:parentActivityName=".view.activities.TopActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.top.yanadigital.topbeta.view.activities.TopActivity" />
+        </activity>
     </application>
 
 </manifest>
