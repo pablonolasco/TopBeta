@@ -3,4 +3,10 @@
     <string name="title_activity_main3">Main3Activity</string>
     <string name="artis.hint.name">Nombre</string>
     <string name="artis.hint.orden">Orden</string>
+    <string name="artist.hint.nombre">Nombre</string>
+    <string name="artis.hint.apellido">Apellidos</string>
+    <string name="artist.hint.fecha">Fecha de nacimiento</string>
+    <string name="artist.hint.estatura">Estatura (cm)</string>
+    <string name="artist.lugarNacimiento">Lugar nacimiento</string>
+    <string name="artist.hint.notas">Notas</string>
 </resources>

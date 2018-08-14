@@ -1,5 +1,6 @@
 package com.top.yanadigital.topbeta.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,14 +10,17 @@ import android.support.v7.widget.Toolbar;
 
 import com.top.yanadigital.topbeta.R;
 import com.top.yanadigital.topbeta.model.vo.Artista;
+import com.top.yanadigital.topbeta.view.MainActivity;
 import com.top.yanadigital.topbeta.view.adapters.ArtistaAdapter;
 import com.top.yanadigital.topbeta.view.adapters.OnItemClickListener;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class TopActivity extends AppCompatActivity implements OnItemClickListener{
+public class TopActivity extends AppCompatActivity implements OnItemClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -44,7 +48,6 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
         }
 
 
-
     }
 
     private void configToolbar() {
@@ -60,7 +63,7 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
         //Instanciar
 
         try {
-            artistaAdapter=new ArtistaAdapter(new ArrayList<Artista>(),this);
+            artistaAdapter = new ArtistaAdapter(new ArrayList<Artista>(), this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -81,12 +84,12 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
 
 
         try {
-            String []nombre= {"Rachel","Kate","Tom","Will"};
-            String [] apellido={"McAdams","Beckinsale","Hanks","Smith"};
-            long[] nacimiento={280108800000L,	112492800000L,425433600000L,-40003200000L};
-            String [] lugares={"Canada","England","USA","USA"};
-            short[]estaturas={163,170,183,188};
-            String[] notas={
+            String[] nombre = {"Rachel", "Kate", "Tom", "Will"};
+            String[] apellido = {"McAdams", "Beckinsale", "Hanks", "Smith"};
+            long[] nacimiento = {280108800000L, 112492800000L, 425433600000L, -40003200000L};
+            String[] lugares = {"Canada", "England", "USA", "USA"};
+            short[] estaturas = {163, 170, 183, 188};
+            String[] notas = {
                     "Rachel Anne McAdams was born on November 17, 1978 in London, Ontario, Canada, to Sandra Kay (Gale), a nurse, and Lance Frederick McAdams, a truck driver and furniture mover. She is of English, Welsh, Irish, and Scottish descent. Rachel became involved with acting as a teenager and by the age of 13 was performing in Shakespearean productions in summer theater camp; she went on to graduate with honors with a BFA degree in Theater from York University. After her debut in an episode of Disney's The Famous Jett Jackson (1998), she co-starred in the Canadian TV series Slings and Arrows (2003), a comedy-drama about the trials and travails of a Shakespearean theater group, and won a Gemini award for her performance in 2003.\n" +
                             "\n" +
                             "Her breakout role as Regina George in the hit comedy Chicas pesadas (2004) instantly catapulted her onto the short list of Hollywood's hottest young actresses. She followed that film with a star turn opposite Ryan Gosling in the adaptation of the Nicholas Sparks bestseller Diario de una pasión (2004), which was a surprise box office success and became the predominant romantic drama for a new, young generation of moviegoers. After filming, McAdams and Gosling became romantically involved and dated through mid-2007. McAdams next showcased her versatility onscreen with the manic comedy Los cazanovias (2005), the thriller Vuelo nocturno (2005), and the holiday drama The Family Stone (2005).\n" +
@@ -104,9 +107,6 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
                             "A year away from the academic community and living on her own in the French capital caused her to re-evaluate the direction of her life. She faced a choice: continue with school or concentrate on her flourishing acting career. After much thought, she chose the acting career. In the spring of 1994 Kate left Oxford, after finishing three years of study. Kate appeared in the BBC/Thames Television satire Cold Comfort Farm (1995), filmed in London and East Sussex during late summer 1994 and which opened to spectacular reviews in the United States, grossing over $5 million during its American run. It was re-released to U.K. theaters in the spring of 1997.\n" +
                             "\n" +
                             "Acting on the stage consumed the first part of 1995; she toured in England with the Thelma Holts Theatre Company production of Anton Chekhov's \"The Seagull\". After turning down several mediocre scripts \"and going nearly berserk with boredom\", she waited seven months before another interesting role was offered to her. Her big movie of 1995 was the romance/horror movie Haunted (1995), starring opposite Aidan Quinn and John Gielgud, and filmed in West Sussex. In this film she wanted to play \"an object of desire\", unlike her past performances where her characters were much less the siren and more the worldly innocent. Kate's first film project of 1996 was the British ITV production of Jane Austen's novel Emma (1996). Her last film of 1996 was the comedy Shooting Fish (1997), filmed at Shepperton Studios in London during early fall. She played the part of Georgie, an altruistic con artist. She had a daughter, Lily, in 1999 with actor Michael Sheen.",
-
-
-
 
 
                     "Thomas Jeffrey Hanks was born in Concord, California, to Janet Marylyn (Frager), a hospital worker, and Amos Mefford Hanks, an itinerant cook. His mother's family, originally surnamed \"Fraga\", was entirely Portuguese, while his father was of mostly English ancestry. Tom grew up in what he has called a \"fractured\" family. He moved around a great deal after his parents' divorce, living with a succession of step-families. No problems, no alcoholism - just a confused childhood. He has no acting experience in college and credits the fact that he could not get cast in a college play with actually starting his career. He went downtown, and auditioned for a community theater play, was invited by the director of that play to go to Cleveland, and there his acting career started.\n" +
@@ -169,15 +169,15 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
                             "\n" +
                             "Smith was consistently listed in Fortune Magazine's \"Richest 40\" list of the forty wealthiest Americans under the age of 40."
             };
-            String[] fotos={
+            String[] fotos = {
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Rachel_McAdams_3.jpg/751px-Rachel_McAdams_3.jpg",
                     "https://upload.wikimedia.org/wikipedia/commons/d/d9/Kate_Beckinsale_2011_Comic-Con_%28truer_color%29.jpg",
                     "https://upload.wikimedia.org/wikipedia/commons/f/fb/Tom_Hanks_2016.jpg",
                     "https://upload.wikimedia.org/wikipedia/commons/6/65/Will_Smith_by_Gage_Skidmore.jpg"
 
             };
-            for (int i=0; i<4; i++){
-                Artista artista= new Artista(i+1,nombre[i],apellido[i],nacimiento[i],lugares[i],estaturas[i],notas[i],i+1,fotos[i]);
+            for (int i = 0; i < 4; i++) {
+                Artista artista = new Artista(i + 1, nombre[i], apellido[i], nacimiento[i], lugares[i], estaturas[i], notas[i], i + 1, fotos[i]);
                 artistaAdapter.add(artista);
             }
         } catch (Exception e) {
@@ -189,13 +189,27 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
 
     //Metodos de la interface OnItemClickListener
     @Override
-    public void onItemClcik(Artista artista){
+    public void onItemClcik(Artista artista) {
 
     }
 
     @Override
-    public void onLongItemClick(Artista artista){
+    public void onLongItemClick(Artista artista) {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode== RESULT_OK && requestCode==1){
+
+        }
+    }
+
+    @OnClick(R.id.fab)
+    public void onViewClicked() {
+        Intent intent= new Intent(TopActivity.this,AddArtistActivity.class);
+        intent.putExtra(Artista.ORDES,artistaAdapter.getItemCount()+1);
+        startActivityForResult(intent,1);
+    }
 }
