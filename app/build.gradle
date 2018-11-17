@@ -17,13 +17,18 @@ android {
         }
     }
 }
-
+//variables de soporte
+def supportLibraryVersion="27.1.0"
+def constrainVersion="1.1.2"
+def dbflowVersion = "4.0.3"
+def glidVersion="4.7.1"
+def butterknife="8.8.1"
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'com.android.support:design:27.1.0'
-    implementation 'com.android.support:cardview-v7:27.1.0'
+    implementation "com.android.support:appcompat-v7:${supportLibraryVersion}"
+    implementation "com.android.support.constraint:constraint-layout:${constrainVersion}"
+    implementation "com.android.support:design:${supportLibraryVersion}"
+    implementation "com.android.support:cardview-v7:${supportLibraryVersion}"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -32,9 +37,14 @@ dependencies {
     * Librerias externas
     * */
     //Butterknife
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation "com.jakewharton:butterknife:${butterknife}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknife}"
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+    implementation "com.github.bumptech.glide:glide:${glidVersion}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${glidVersion}"
+
+    //DB flow
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflowVersion}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflowVersion}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflowVersion}"
 }

@@ -179,7 +179,8 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
             };
             for (int i = 0; i < 4; i++) {
                 Artista artista = new Artista(i + 1, nombre[i], apellido[i], nacimiento[i], lugares[i], estaturas[i], notas[i], i + 1, fotos[i]);
-                artistaAdapter.add(artista);
+                //artistaAdapter.add(artista);
+                artista.save();
             }
         } catch (Exception e) {
             e.printStackTrace();
