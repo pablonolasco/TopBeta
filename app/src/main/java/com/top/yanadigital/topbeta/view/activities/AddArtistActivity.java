@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -134,55 +135,69 @@ public class AddArtistActivity extends AppCompatActivity implements DatePickerDi
     }
 
     private void saveArtist() {
-       /* mArtista.setNombre(edNombre.getText().toString().trim());
-        mArtista.setApellidos(edApellido.getText().toString().trim());
-        mArtista.setEstatura(Short.valueOf(edEstatura.getText().toString().trim()));
-        mArtista.setLugarNacimiento(edLugarNacimiento.getText().toString().trim());
-        mArtista.setNombre(edNotas.getText().toString().trim());*/
-        /**
-         * Agregar a la actividad principal el artista agregado
-         */
-        if(validarfields()) {
-            TopActivity.sARTISTA.setNombre(edNombre.getText().toString().trim());
-            TopActivity.sARTISTA.setApellidos(edApellido.getText().toString().trim());
-            TopActivity.sARTISTA.setEstatura(Short.valueOf(edEstatura.getText().toString().trim()));
-            TopActivity.sARTISTA.setLugarNacimiento(edLugarNacimiento.getText().toString().trim());
-            TopActivity.sARTISTA.setNombre(edNotas.getText().toString().trim());
-            TopActivity.sARTISTA.setOrden(mArtista.getOrden());
-            TopActivity.sARTISTA.setFotoURL(mArtista.getFotoURL());
-            //Bandera para indicar que salio bien todo y terminar la actividad
-            setResult(RESULT_OK);
+        try {
+            mArtista.setNombre(edNombre.getText().toString().trim());
+            mArtista.setApellidos(edApellido.getText().toString().trim());
+            mArtista.setEstatura(Short.valueOf(edEstatura.getText().toString().trim()));
+            mArtista.setLugarNacimiento(edLugarNacimiento.getText().toString().trim());
+            mArtista.setNotas(edNotas.getText().toString().trim());
+            long response = mArtista.insert();
+            if (response > 0) {
+                Log.i("DBFLOW", "Insercion correcta");
+            }
+            /**
+             * Agregar a la actividad principal el artista agregado
+             if(validarfields()) {
+             TopActivity.sARTISTA.setNombre(edNombre.getText().toString().trim());
+             TopActivity.sARTISTA.setApellidos(edApellido.getText().toString().trim());
+             TopActivity.sARTISTA.setEstatura(Short.valueOf(edEstatura.getText().toString().trim()));
+             TopActivity.sARTISTA.setLugarNacimiento(edLugarNacimiento.getText().toString().trim());
+             TopActivity.sARTISTA.setNombre(edNotas.getText().toString().trim());
+             TopActivity.sARTISTA.setOrden(mArtista.getOrden());
+             TopActivity.sARTISTA.setFotoURL(mArtista.getFotoURL());
+             //Bandera para indicar que salio bien todo y terminar la actividad
+             */
+
+            //  setResult(RESULT_OK);
             finish();
+        } catch (NumberFormatException e) {
+            Log.i("DBFLOW", "Insercion incorrecta");
+            e.printStackTrace();
+        } catch (Exception e) {
+            Log.i("DBFLOW", "Insercion incorrecta");
+            e.printStackTrace();
         }
     }
 
     private boolean validarfields() {
-            boolean isValidFalse=true;
+        boolean isValidFalse = true;
 
-            try {
-                if(edEstatura.getText().toString().trim().isEmpty() ||
-                        Integer.valueOf(edEstatura.getText().toString().trim())< getResources().getInteger(R.integer.estatura_min)){
-                    edEstatura.setError(getString(R.string.addArtist_error_estaturaMin));
-                    edEstatura.requestFocus();
-                    isValidFalse=false;
-                }
-                if(edApellido.getText().toString().trim().isEmpty()){;
-                    edApellido.setError(getString(R.string.addArtist_error_required));
-                    edApellido.requestFocus();
-                    isValidFalse=false;
-                }
-
-                if(edNombre.getText().toString().trim().isEmpty()){;
-                    edNombre.setError(getString(R.string.addArtist_error_required));
-                    edNombre.requestFocus();
-                    isValidFalse=false;
-                }
-
-            }catch (Exception e){
-                e.printStackTrace();
+        try {
+            if (edEstatura.getText().toString().trim().isEmpty() ||
+                    Integer.valueOf(edEstatura.getText().toString().trim()) < getResources().getInteger(R.integer.estatura_min)) {
+                edEstatura.setError(getString(R.string.addArtist_error_estaturaMin));
+                edEstatura.requestFocus();
+                isValidFalse = false;
+            }
+            if (edApellido.getText().toString().trim().isEmpty()) {
+                ;
+                edApellido.setError(getString(R.string.addArtist_error_required));
+                edApellido.requestFocus();
+                isValidFalse = false;
             }
 
-            return isValidFalse;
+            if (edNombre.getText().toString().trim().isEmpty()) {
+                ;
+                edNombre.setError(getString(R.string.addArtist_error_required));
+                edNombre.requestFocus();
+                isValidFalse = false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return isValidFalse;
     }
 
     @OnClick(R.id.edfechaNacimiento)

@@ -7,14 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.top.yanadigital.topbeta.R;
 import com.top.yanadigital.topbeta.model.vo.Artista;
+import com.top.yanadigital.topbeta.model.vo.Artista_Table;
 import com.top.yanadigital.topbeta.view.MainActivity;
 import com.top.yanadigital.topbeta.view.adapters.ArtistaAdapter;
 import com.top.yanadigital.topbeta.view.adapters.OnItemClickListener;
 
+import java.sql.SQLData;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +48,7 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
 
             configAdapter();
             configRecyclerView();
-            generateArtist();
+         //   generateArtist();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -178,9 +183,19 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
 
             };
             for (int i = 0; i < 4; i++) {
-                Artista artista = new Artista(i + 1, nombre[i], apellido[i], nacimiento[i], lugares[i], estaturas[i], notas[i], i + 1, fotos[i]);
+                //Artista artista = new Artista(i + 1, nombre[i], apellido[i], nacimiento[i], lugares[i], estaturas[i], notas[i], i + 1, fotos[i]);
+                //Cambio de constuctor porque el indice es auto numerico
+                Artista artista = new Artista(nombre[i], apellido[i], nacimiento[i],
+                        lugares[i], estaturas[i], notas[i], i + 1, fotos[i]);
                 //artistaAdapter.add(artista);
-                artista.save();
+                //save se encarga de verificar si es una actulizacion o insercion
+                try {
+                    artista.save();
+                    Log.i("DBFLOW","Insercion correcta");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.i("DBFLOW","Insercion incorrecta");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -189,10 +204,41 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
 
     }
 
+    /**
+     * TODO metodo para pintar los artistas de la BD
+     */
+    @Override
+    protected void onResume() {
+        try {
+            super.onResume();
+            artistaAdapter.setList(get_artista_bd());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * TODO metodo que regresa todos los artistas de la bd
+     * @return
+     */
+    private List<Artista> get_artista_bd() {
+        List<Artista>artistaListTable= new ArrayList<>();
+        try {
+            artistaListTable=SQLite
+                                .select()
+                                .from(Artista.class)
+                                .orderBy(Artista_Table.orden,true)
+                                .queryList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return artistaListTable;
+    }
+
     //Metodos de la interface OnItemClickListener
     @Override
     public void onItemClcik(Artista artista) {
-        sARTISTA.setId(artista.getId());
+      /*  sARTISTA.setId(artista.getId());
         sARTISTA.setNombre(artista.getNombre());
         sARTISTA.setApellidos(artista.getApellidos());
         sARTISTA.setEstatura(artista.getEstatura());
@@ -200,7 +246,9 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
         sARTISTA.setOrden(artista.getOrden());
         sARTISTA.setNotas(artista.getNotas());
         sARTISTA.setFotoURL(artista.getFotoURL());
+        */
         Intent intent= new Intent(this,DetalleActivity.class);
+        intent.putExtra(Artista.ID,artista.getId());
         startActivity(intent);
 
     }
@@ -209,7 +257,7 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
     public void onLongItemClick(Artista artista) {
 
     }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -217,7 +265,7 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
             //Agregar el artista que viene desde la otra interfaz
             artistaAdapter.add(sARTISTA);
         }
-    }
+    }*/
 
     @OnClick(R.id.fab)
     public void onViewClicked() {

@@ -15,6 +15,7 @@ import java.util.Objects;
  */
 public class Artista extends BaseModel {
     public static final String ORDES = "orden";
+    public static final String ID ="id" ;
     @PrimaryKey (autoincrement = true)
     private long id;
     @Column

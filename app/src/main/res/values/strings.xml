@@ -107,4 +107,11 @@
     <string name="action_settings">Settings</string>
     <string name="artist.hint.edad">Edad</string>
     <string name="artist.hint.orden">Orden</string>
+    <string name="detalle_message_update_succes">Datos almacenados correctamente</string>
+    <string name="detalle_message_update_error">No se puedieron actualizar los datos, estamos trabajando en ello.</string>
+    <string name="detalle_choser_tittle">Seleccione uno</string>
+    <string name="tittle_alert_dialog" >Mensaje</string>
+    <string name="msg_delete_detalle_dialog">¿Esta seguro de eliminar la foto de %s?</string>
+    <string name="accion_delete_dialog">Eliminar</string>
+    <string name="accion_cancel_dialog">Cancelar</string>
 </resources>

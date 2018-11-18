@@ -97,6 +97,15 @@ public class ArtistaAdapter extends RecyclerView.Adapter<ArtistaAdapter.ViewHold
         }
     }
 
+    /**
+     * TODO metodo que sirve para guardar al artista de a bd
+     * @param artista_bd
+     */
+    public void setList(List<Artista> artista_bd) {
+        this.artistaList=artista_bd;
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.imgFoto)
         AppCompatImageView imgFoto;
