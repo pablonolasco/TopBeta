@@ -1,8 +1,13 @@
 package com.top.yanadigital.topbeta.view.activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +25,7 @@ import com.top.yanadigital.topbeta.view.adapters.OnItemClickListener;
 import java.sql.SQLData;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +41,7 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
     CoordinatorLayout containerMain;
     private ArtistaAdapter artistaAdapter;
     public static final Artista sARTISTA= new Artista();
-
+    private Context mTopActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -238,15 +244,6 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
     //Metodos de la interface OnItemClickListener
     @Override
     public void onItemClcik(Artista artista) {
-      /*  sARTISTA.setId(artista.getId());
-        sARTISTA.setNombre(artista.getNombre());
-        sARTISTA.setApellidos(artista.getApellidos());
-        sARTISTA.setEstatura(artista.getEstatura());
-        sARTISTA.setLugarNacimiento(artista.getLugarNacimiento());
-        sARTISTA.setOrden(artista.getOrden());
-        sARTISTA.setNotas(artista.getNotas());
-        sARTISTA.setFotoURL(artista.getFotoURL());
-        */
         Intent intent= new Intent(this,DetalleActivity.class);
         intent.putExtra(Artista.ID,artista.getId());
         startActivity(intent);
@@ -254,7 +251,38 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
     }
 
     @Override
-    public void onLongItemClick(Artista artista) {
+    public void onLongItemClick(final Artista artista) {
+        Vibrator vibrator=(Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+        if(vibrator != null){
+            vibrator.vibrate(60);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.tittle_alert_dialog)
+                .setMessage(String.format(Locale.ROOT, getString(R.string.msg_delete_main_dialog), artista.getNombreCompleto()))
+                .setPositiveButton(R.string.accion_delete_dialog, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        try {
+                            artista.delete();
+                            artistaAdapter.remove(artista);
+                            showMessage(R.string.top_message_delete_succes,true);
+                        } catch (Exception e) {
+                            showMessage(R.string.top_message_delete_error,false);
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.accion_cancel_dialog, null);
+        builder.show();
+    }
+
+    private void showMessage(int resource, boolean type) {
+        if (type) {
+            Snackbar.make(containerMain, resource, Snackbar.LENGTH_SHORT).show();
+        } else {
+            Snackbar.make(containerMain, resource, Snackbar.LENGTH_SHORT).show();
+        }
 
     }
 /*

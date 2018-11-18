@@ -34,6 +34,7 @@ import butterknife.OnClick;
 
 public class AddArtistActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
+    private static final int RC_PHOTO_PICKER = 4;
     @BindView(R.id.image_foto)
     AppCompatImageView imageFoto;
     @BindView(R.id.edNombre)
@@ -240,8 +241,27 @@ public class AddArtistActivity extends AppCompatActivity implements DatePickerDi
     public void imageView(View view) {
         switch (view.getId()) {
             case R.id.imageDeleteFoto:
+                android.app.AlertDialog.Builder builder= new android.app.AlertDialog.Builder(this)
+                        .setTitle(R.string.tittle_alert_dialog)
+                        .setMessage(String.format(Locale.ROOT,getString(R.string.msg_delete_detalle_dialog),mArtista.getNombre()))
+                        .setPositiveButton(R.string.accion_delete_dialog, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                configImageView(null);
+                            }
+                        })
+                        .setNegativeButton(R.string.accion_cancel_dialog,null);
+                builder.show();
                 break;
             case R.id.imageFromGallery:
+                // TODO: 17/11/18 ACTION_GET_CONTENT le permite al usuario que tipo de datos quiere retornar
+                Intent intent= new Intent(Intent.ACTION_GET_CONTENT);
+                // TODO: 17/11/18 Elejimos que sean de tipo imagen
+                intent.setType("image/jpeg");
+                // TODO: 17/11/18 EXTRA_LOCAL_ONLY indicamos que solo sean del dispositivo
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+                startActivityForResult(Intent.createChooser(intent,getString(R.string.detalle_choser_tittle)),RC_PHOTO_PICKER);
+
                 break;
             case R.id.imageFromUrl:
                 showAddPhotoGallery();
@@ -287,6 +307,30 @@ public class AddArtistActivity extends AppCompatActivity implements DatePickerDi
         mArtista.setFotoURL(fotoUrl);
 
     }
+
+    /**
+     * TODO METODO OVWERRIDE QUE SE EJECUTA AL PRESIONAR CASE imageFromGallery
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try {
+            if(resultCode == RESULT_OK){
+                switch (requestCode){
+                    case RC_PHOTO_PICKER:
+                        configImageView(data.getDataString());
+                        break;
+                }
+            }
+            super.onActivityResult(requestCode, resultCode, data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }

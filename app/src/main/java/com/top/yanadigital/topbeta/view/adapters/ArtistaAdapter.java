@@ -106,6 +106,19 @@ public class ArtistaAdapter extends RecyclerView.Adapter<ArtistaAdapter.ViewHold
         notifyDataSetChanged();
     }
 
+    /**
+     * TODO METODO QUE ELIMINA AL ARTISTA
+     * @param artista
+     */
+    public void remove(Artista artista) {
+        // TODO: 17/11/18 si el artista existe dentro de la lista artista, lo removera 
+        if (artistaList.contains(artista)) {
+            artistaList.remove(artista);
+            notifyDataSetChanged();
+        }
+
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.imgFoto)
         AppCompatImageView imgFoto;

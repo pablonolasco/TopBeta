@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -386,6 +387,7 @@ public class DetalleActivity extends AppCompatActivity implements DatePickerDial
 
                 break;
             case R.id.imageFromUrl:
+                showAddPhotoGallery();
                 break;
         }
     }
@@ -428,4 +430,25 @@ public class DetalleActivity extends AppCompatActivity implements DatePickerDial
             showMessage(R.string.detalle_message_update_error,false);
         }
     }
+
+
+    private void showAddPhotoGallery() {
+        /*
+        Crear alerta desde codigo
+        * */
+        final EditText edUrlFoto = new EditText(this);
+        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(this)
+                .setTitle(R.string.label_dialog_tittle)
+                .setPositiveButton(R.string.label_dialog_add, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        savePhotoUrl(edUrlFoto.getText().toString().trim());
+                    }
+                })
+                .setNegativeButton(R.string.label_dialog_cancel, null);
+        alertDialog.setView(edUrlFoto);
+        alertDialog.show();
+    }
+
+
 }
