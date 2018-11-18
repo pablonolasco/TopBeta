@@ -252,6 +252,7 @@ public class TopActivity extends AppCompatActivity implements OnItemClickListene
 
     @Override
     public void onLongItemClick(final Artista artista) {
+        // TODO: 17/11/18 evento que se dispara al seleccionar un item a largo tiempo declarar servicio en el manifest
         Vibrator vibrator=(Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
         if(vibrator != null){
             vibrator.vibrate(60);
